@@ -29,23 +29,23 @@
 
 ## Add Task
 
-<img src="../Task-Managment-App/src/assets/task-add.png">
+<img src="./src/assets/task-add.png">
 
 <br />
 
 ## Update Task
 
-<img src="../Task-Managment-App/src/assets/task-update.png">
+<img src="./src/assets/task-update.png">
 <br />
 
 ## Delete Task
 
-<img src="../Task-Managment-App/src/assets/task-delete.png">
+<img src="./src/assets/task-delete.png">
 <br />
 
 ## All Task
 
-<img src="../Task-Managment-App/src/assets/task-homePage.png">
+<img src="./src/assets/task-homePage.png">
 <br />
 
 ## Getting Started
