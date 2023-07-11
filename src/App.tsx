@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/NavBar";
 import { Loader } from "./components/Loader";
 
-import AddBook from "./pages/AddBook";
+import AddTask from "./pages/AddTask";
 
 const App = () => {
   return (
@@ -11,7 +11,7 @@ const App = () => {
       <Router>
         <Navbar />
         <Routes>
-          <Route path="/" element={<AddBook />} />
+          <Route path="/" element={<AddTask />} />
         </Routes>
       </Router>
     </>

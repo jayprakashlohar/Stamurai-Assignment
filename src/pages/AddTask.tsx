@@ -28,13 +28,14 @@ import {
   AlertDialogHeader,
   AlertDialogBody,
   AlertDialogFooter,
+  Select,
 } from "@chakra-ui/react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { v4 as uuidv4 } from "uuid";
-import { addNewBook, updateBook, deleteBook } from "../redux/bookSlice";
+import { addNewBook, updateBook, deleteBook } from "../redux/taskSlice";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../redux/store";
-import DeleteBookModel from "./DeleteBookModel";
+import DeleteTaskModal from "./DeleteTaskModal";
 
 const useAppDispatch = () => useDispatch<AppDispatch>();
 const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
@@ -51,28 +52,30 @@ const AddBook = () => {
   const dispatch = useAppDispatch();
 
   const [title, setTitle] = useState<string | undefined>("");
-  const [author, setAuthor] = useState<string | undefined>("");
+  const [description, setdescription] = useState<string | undefined>("");
   const [ids, setId] = useState<string | undefined>("");
   const [selectedId, setSelectedId] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+  const [status, setStatus] = useState<string | undefined>("");
   const isError = title === "";
-  const isErrorAuthor = author === "";
+  const isErrordescription = description === "";
 
   console.log(isError);
-  
+
   const bookList = useAppSelector((state) => state.book.bookList);
 
   const handleOnSubmit = () => {
     if (ids) {
       modalAddButton.onClose();
-      dispatch(updateBook({ author, title, id: ids }));
+      dispatch(updateBook({ description, title, id: ids, status }));
       clearInputs();
       return;
     } else {
-      if (title && author) {
+      if (title && description && status) {
         const userData = {
           title,
-          author,
+          description,
+          status,
           id: uuidv4(),
         };
         let oldData =
@@ -106,7 +109,7 @@ const AddBook = () => {
   const editData = (book: any) => {
     modalAddButton.onOpen();
     setTitle(book.title);
-    setAuthor(book.author);
+    setdescription(book.description);
     setId(book.id);
     return;
   };
@@ -119,7 +122,7 @@ const AddBook = () => {
 
   const clearInputs = () => {
     setTitle("");
-    setAuthor("");
+    setdescription("");
     setId("");
   };
 
@@ -169,7 +172,7 @@ const AddBook = () => {
             fontWeight="bold"
             marginBottom={"5"}
           >
-            Book Details
+            Task Management App
           </Text>
         </Box>
         <Box margin="20px">
@@ -209,14 +212,27 @@ const AddBook = () => {
                     </FormControl>
 
                     <FormControl mt={4} isRequired isInvalid={isError}>
-                      <FormLabel>Author</FormLabel>
+                      <FormLabel>description</FormLabel>
                       <Input
                         onKeyDown={(e) => something(e)}
-                        value={author}
-                        placeholder="Enter Author"
-                        blur={author}
-                        onChange={(e) => setAuthor(e.currentTarget.value)}
+                        value={description}
+                        placeholder="Enter description"
+                        blur={description}
+                        onChange={(e) => setdescription(e.currentTarget.value)}
                       />
+                    </FormControl>
+                    <FormControl mt={4}>
+                      <FormLabel>Choose an option:</FormLabel>
+                      <Select
+                        value={status}
+                        onKeyDown={(e) => something(e)}
+                        onChange={(e) => setStatus(e.currentTarget.value)}
+                        placeholder="Select an option"
+                      >
+                        <option value="To Do">To Do</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                      </Select>
                     </FormControl>
                   </ModalBody>
 
@@ -246,7 +262,10 @@ const AddBook = () => {
                       Title
                     </Th>
                     <Th textAlign={"center"} fontSize={"16"}>
-                      Author
+                      description
+                    </Th>
+                    <Th textAlign={"end"} fontSize={"16"}>
+                      STATUS
                     </Th>
                     <Th textAlign={"end"} fontSize={"16"}>
                       ACTIONS
@@ -260,7 +279,10 @@ const AddBook = () => {
                         {book.title}
                       </Td>
                       <Td textAlign={"center"} fontSize={"16"}>
-                        {book.author}
+                        {book.description}
+                      </Td>
+                      <Td textAlign={"center"} fontSize={"16"}>
+                        {book.status}
                       </Td>
                       <Td textAlign={"end"} fontSize={"16"}>
                         <IconButton
@@ -285,7 +307,7 @@ const AddBook = () => {
                 </Tbody>
               </Table>
             </TableContainer>
-            <DeleteBookModel
+            <DeleteTaskModal
               isOpen={modalDeleteButton.isOpen}
               onClose={modalDeleteButton.onClose}
               handleDelete={handleDelete}

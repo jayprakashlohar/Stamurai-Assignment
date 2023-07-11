@@ -1,5 +1,6 @@
-export type BookState = {
-    id: string | any;
-    title: string | undefined;
-    author: string | undefined;
-  };
+export type TaskState = {
+  id: string | any;
+  title: string | undefined;
+  description: string | undefined;
+  status: string | undefined;
+};

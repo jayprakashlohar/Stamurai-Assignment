@@ -1,32 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { BookState } from "../types";
+import { TaskState } from "../types";
 
 type initialStateType = {
-  bookList: BookState[];
+  bookList: TaskState[];
 };
-const bookList: BookState[] =
+const bookList: TaskState[] =
   JSON.parse(localStorage.getItem("userData") as string) ?? [];
 
 const initialState: initialStateType = {
   bookList,
 };
 
-export const bookSlice = createSlice({
+export const taskSlice = createSlice({
   name: "counter",
   initialState,
   reducers: {
-    addNewBook: (state, action: PayloadAction<BookState>) => {
+    addNewBook: (state, action: PayloadAction<TaskState>) => {
       state.bookList?.push(action.payload);
     },
-    updateBook: (state, action: PayloadAction<BookState>) => {
+    updateBook: (state, action: PayloadAction<TaskState>) => {
       const {
-        payload: { title, id, author },
+        payload: { title, id, description, status },
       } = action;
 
       state.bookList = state.bookList.map((book) =>
-        book.id === id ? { ...book, author, title } : book
+        book.id === id ? { ...book, description, title, status } : book
       );
       localStorage.setItem("userData", JSON.stringify(state.bookList));
     },
@@ -40,7 +40,7 @@ export const bookSlice = createSlice({
   },
 });
 
-export const { addNewBook, updateBook, deleteBook } = bookSlice.actions;
+export const { addNewBook, updateBook, deleteBook } = taskSlice.actions;
 
 export const selectBookList = (state: RootState) => state.book.bookList;
-export default bookSlice.reducer;
+export default taskSlice.reducer;
